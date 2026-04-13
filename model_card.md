@@ -68,21 +68,28 @@ It strongly favors songs that match the selected genre, which means it may ignor
 The dataset is small and may not represent all genres or moods equally, which can bias the results. The model also assumes that all users have simple, fixed preferences, which is not realistic.
 
 Additionally, the system does not consider important factors like user history, context, or changing tastes over time.  
+During testing, I found that the system struggles with conflicting user preferences.
 
+For example, in the edge-case profile (lofi + sad mood + high energy), the system still recommended mostly lofi songs, even though the mood did not match. This happened because the genre weight (+2.0) is stronger than the mood weight, causing the system to prioritize genre over other features.
+
+This shows that the model is biased toward genre and may ignore important aspects like mood when preferences conflict. As a result, it may not always reflect the user's true intent.
 ---
 
 ## 7. Evaluation  
 
-I tested the system using different user profiles, such as:
+I tested the system using multiple user profiles, including:
 
-Pop / happy / high energy
-Lofi / chill / low energy
+- Pop / happy / high energy  
+- Lofi / chill / low energy  
+- An edge-case profile with conflicting preferences  
 
-I evaluated whether the top recommended songs matched the expected vibe. In most cases, the system performed well and selected songs that aligned with the user’s preferences.
+I evaluated whether the top recommended songs matched the expected musical “vibe.” In most cases, the system performed well and selected songs that aligned with the user’s preferences. For example, the pop profile returned energetic and upbeat songs, while the lofi profile produced calm and low-energy tracks.
 
-One interesting observation was that even when genre did not match, songs with similar energy and mood still ranked relatively high, showing that the numerical features were working as intended
+One interesting observation was that even when the genre did not match, songs with similar energy and mood still ranked relatively high. This shows that the numerical features (energy, valence, danceability) were working as intended and contributing meaningfully to the scoring.
 
----
+Another key finding came from the edge-case profile, where the user preferred a sad mood but high energy and a lofi genre. The system still recommended mostly lofi songs, even though the mood did not match. This indicates that the genre feature has a stronger influence than mood in the scoring logic.
+
+Overall, this experiment shows that the recommender is highly sensitive to feature weights. Small changes in weights can significantly affect the ranking of songs, which reflects how real-world recommendation systems must carefully balance multiple factors to produce accurate and fair results.
 
 ## 8. Future Work  
 
