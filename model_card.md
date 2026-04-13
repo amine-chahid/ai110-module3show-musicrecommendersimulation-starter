@@ -2,111 +2,96 @@
 
 ## 1. Model Name  
 
-VibeMatch Recommender 1.0
----
-
-## 2. Intended Use  
-
-This recommender system is designed to suggest songs based on a user’s musical preferences. It generates recommendations by comparing song features like genre, mood, and energy with the user’s taste profile.
-
-The system assumes that a user has consistent preferences (for example, liking a certain genre or mood). It is built for classroom exploration and learning purposes, not for real-world deployment. Its goal is to demonstrate how recommendation systems transform user data into suggestions 
+VibeMatch Recommender 1.0  
 
 ---
 
-## 3. How the Model Works  
+## 2. Goal / Task  
 
-The model uses a content-based approach. It compares each song’s attributes with the user’s preferences and assigns a score based on similarity.
-
-It considers:
-
-Genre (exact match)
-Mood (exact match)
-Energy (how close the values are)
-Valence (how positive or happy the song feels)
-Danceability (how suitable the song is for movement)
-
-Songs receive higher scores when they closely match the user’s preferences. Exact matches (like genre or mood) are weighted more heavily, while numerical features are scored based on how close they are to the user’s target values.
-
-Compared to the starter logic, I expanded the system by adding more features (valence and danceability) and improved the scoring to better capture the overall “vibe” of a song instead of relying only on simple matches.
+The goal of this system is to recommend songs based on a user’s preferences.  
+It suggests songs that match the user’s genre, mood, and overall vibe.
 
 ---
 
-## 4. Data  
+## 3. Data Used  
 
-The dataset contains 10 songs with attributes such as:
+The dataset contains 10 songs.  
 
-Genre
-Mood
-Energy
-Tempo
-Valence
-Danceability
-Acousticness
+Each song includes:
+- Genre  
+- Mood  
+- Energy  
+- Tempo  
+- Valence  
+- Danceability  
+- Acousticness  
 
-The songs cover a mix of genres including pop, lofi, rock, ambient, jazz, synthwave, and indie pop.
-
-Although the dataset includes some variety, it is still small and does not fully represent all musical tastes. It also does not include features like lyrics, language, or artist popularity.  
-
----
-
-## 5. Strengths  
-
-The system works well for users with clear and consistent preferences, such as someone who enjoys a specific genre and mood.
-
-It captures the “vibe” of music effectively by combining multiple features instead of relying on just one. In many cases, the top recommendations matched my expectations, especially when testing profiles like “pop/happy” or “lofi/chill.”
-
-Another strength is that the system provides explanations for each recommendation, making it easy to understand why a song was suggested.
+The dataset includes a mix of genres such as pop, lofi, rock, and ambient.  
+However, it is small and does not represent all types of music.
 
 ---
 
-## 6. Limitations and Bias 
+## 4. Algorithm Summary  
 
-The system has several limitations.
+The system compares each song to the user’s preferences and assigns a score.  
 
-It strongly favors songs that match the selected genre, which means it may ignore good recommendations from other genres. This can create a “filter bubble” where users only see similar types of music.
+- Songs get points for matching genre and mood  
+- Songs get additional points if their energy, valence, and danceability are close to the user’s preferences  
 
-The dataset is small and may not represent all genres or moods equally, which can bias the results. The model also assumes that all users have simple, fixed preferences, which is not realistic.
+The songs are then ranked from highest to lowest score, and the top results are recommended.
 
-Additionally, the system does not consider important factors like user history, context, or changing tastes over time.  
-During testing, I found that the system struggles with conflicting user preferences.
-
-For example, in the edge-case profile (lofi + sad mood + high energy), the system still recommended mostly lofi songs, even though the mood did not match. This happened because the genre weight (+2.0) is stronger than the mood weight, causing the system to prioritize genre over other features.
-
-This shows that the model is biased toward genre and may ignore important aspects like mood when preferences conflict. As a result, it may not always reflect the user's true intent.
 ---
 
-## 7. Evaluation  
+## 5. Observed Behavior / Biases  
 
-I tested the system using multiple user profiles, including:
+The system tends to favor songs that match the user’s genre.  
 
-- Pop / happy / high energy  
-- Lofi / chill / low energy  
-- An edge-case profile with conflicting preferences  
+During testing, I found that even when mood did not match, songs were still recommended if the genre matched. For example, in an edge-case profile (lofi + sad mood + high energy), the system still recommended mostly lofi songs.
 
-I evaluated whether the top recommended songs matched the expected musical “vibe.” In most cases, the system performed well and selected songs that aligned with the user’s preferences. For example, the pop profile returned energetic and upbeat songs, while the lofi profile produced calm and low-energy tracks.
+This shows that genre has a stronger influence than mood, which can create a bias and reduce variety in recommendations.
 
-One interesting observation was that even when the genre did not match, songs with similar energy and mood still ranked relatively high. This shows that the numerical features (energy, valence, danceability) were working as intended and contributing meaningfully to the scoring.
+---
 
-Another key finding came from the edge-case profile, where the user preferred a sad mood but high energy and a lofi genre. The system still recommended mostly lofi songs, even though the mood did not match. This indicates that the genre feature has a stronger influence than mood in the scoring logic.
+## 6. Evaluation Process  
 
-Overall, this experiment shows that the recommender is highly sensitive to feature weights. Small changes in weights can significantly affect the ranking of songs, which reflects how real-world recommendation systems must carefully balance multiple factors to produce accurate and fair results.
+I tested the system using multiple user profiles:
+- High-energy pop  
+- Chill lofi  
+- Intense rock  
+- An edge-case with conflicting preferences  
 
-## 8. Future Work  
+In most cases, the recommendations matched the expected vibe. Pop users received energetic songs, while lofi users received calmer tracks.
 
-If I had more time, I would improve the system by:
+The edge-case profile revealed that conflicting preferences can confuse the system, especially when one feature (like genre) dominates the scoring.
 
-Adding more songs to increase diversity
-Including more features like lyrics or artist similarity
-Introducing collaborative filtering using other users’ data
-Improving diversity so recommendations are not too similar
-Making the system adapt to changing user preferences
+---
+
+## 7. Intended Use and Non-Intended Use  
+
+**Intended Use:**
+- Learning how recommendation systems work  
+- Demonstrating how user preferences affect results  
+
+**Non-Intended Use:**
+- Real music recommendation systems  
+- Production or large-scale applications  
+
+---
+
+## 8. Ideas for Improvement  
+
+- Add more songs to improve diversity  
+- Balance feature weights (reduce genre dominance)  
+- Add more features like lyrics or artist similarity  
 
 ---
 
 ## 9. Personal Reflection  
 
-This project helped me understand how recommendation systems convert user preferences into numerical scores and rankings. I learned that even simple rules can produce useful recommendations, but small design choices (like feature weights) can have a big impact.
+The biggest learning moment was seeing how small changes in scoring weights can completely change the recommendations.  
 
-One interesting takeaway was how easily bias can appear, especially when the system prioritizes one feature like genre. It made me realize that real-world systems must balance personalization with diversity.
+AI tools helped me write and debug code faster, but I had to double-check the logic to make sure it made sense.  
 
-Overall, this project gave me a much clearer understanding of how apps like Spotify and YouTube recommend content, and it showed me that human judgment is still important in designing fair and useful systems.
+What surprised me is how a simple scoring system can still feel like a real recommendation engine.  
+
+If I continued this project, I would expand the dataset and build a simple user interface.
